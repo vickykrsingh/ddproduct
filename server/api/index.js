@@ -14,7 +14,7 @@ import userRoutes from "../routes/userRoute.js"
 
 
 // rest object
-export const app = express();
+const app = express();
 
 // configuration environment
 dotenv.config();
@@ -37,10 +37,8 @@ app.use(cors())
 
 // Accessing Environment variables
 
-
-// routes
 app.get('/',(req,res)=>{
-  res.send("pong")
+  res.send("hello")
 })
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
@@ -50,3 +48,5 @@ app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/user", userRoutes);
 
 
+
+export default app;
