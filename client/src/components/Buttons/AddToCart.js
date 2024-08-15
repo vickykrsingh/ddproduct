@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { useCart } from "../../context/CartContext";
 import toast from 'react-hot-toast'
 import axios from "axios";
 
 function AddToCart({ product , width , height }) {
-  const [cart,setCart] = useCart();
   const [fire,setFire] = useState(false)
 
   const getAllCart = async () => {
     try {
-      const {data} = await axios.get(`${process.env.REACT_APP_API_KEY}/api/v1/cart/get-all-cart`)
-      // await setCart(data?.cartItem)
+      await axios.get(`${process.env.REACT_APP_API_KEY}/api/v1/cart/get-all-cart`)
       return
     } catch (error) {
       toast.error('request timeout while getting all product')

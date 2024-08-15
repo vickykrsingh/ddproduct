@@ -14,7 +14,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminRoute from "./components/Routes/AdminRoute";
 import CreateProduct from "./pages/admin/CreateProduct";
 import CreateCategory from "./pages/admin/CreateCategory";
-import Users from "./pages/admin/AllUsers";
+import DashboardAnalyzer from "./pages/admin/Dashboard.js";
 import Profile from "./pages/user/Profile";
 import Orders from "./pages/user/Orders";
 import Products from "./pages/admin/Products";
@@ -49,7 +49,7 @@ function App() {
           <Route path="admin/create-product" element={<CreateProduct />} />
           <Route path="admin/product/:id" element={<UpdateProduct />} />
           <Route path="admin/products" element={<Products />} />
-          <Route path="admin/all-users" element={<Users />} />
+          <Route path="admin-dashboard" element={<DashboardAnalyzer />} />
           <Route path="admin/all-orders" element={<AllOrders />} />
         </Route>
         <Route path="/forgetpassword" element={<ForgetPassword />} />

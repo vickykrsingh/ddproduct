@@ -3,7 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "./AdminMenu";
 import axios from "axios";
 
-function AllUsers() {
+function Dashboard() {
   const [user, setUser] = useState([]);
   const fetchAllUsers = async () => {
     console.log('first')
@@ -37,4 +37,4 @@ function AllUsers() {
   );
 }
 
-export default AllUsers;
+export default Dashboard;

@@ -10,7 +10,6 @@ import { Select } from "antd";
 const { Option } = Select;
 
 function AllOrders() {
-  const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState([]);
   const [search, setSearchChange] = useState("");
   const [searchKey, setSearchKey] = useState("order_id");
@@ -25,11 +24,9 @@ function AllOrders() {
   const navigate = useNavigate();
   const getAllOrder = async () => {
     try {
-      setLoading(true);
       const { data } = await axios.get(`${process.env.REACT_APP_API_KEY}/api/v1/payment/all-admin-order`);
       if (data?.success) {
         setOrder(data?.orders);
-        setLoading(false);
       }
     } catch (error) {
       toast.error("Error while fetching your all order");

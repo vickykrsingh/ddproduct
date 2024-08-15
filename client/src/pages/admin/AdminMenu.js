@@ -30,10 +30,10 @@ function AdminMenu() {
           All Orders
         </NavLink>
         <NavLink
-          to="/dashboard/admin/all-users"
+          to="/dashboard/admin-dashboard"
           className="list-group-item list-group-item-light bg-purple-800 list-group-item-action"
         >
-          Users
+          Dashboard
         </NavLink>
       </div>
     </>
