@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import AdminMenu from "./AdminMenu";
+import Layout from "../../components/Layout/Layout.jsx";
+import AdminMenu from "./AdminMenu.jsx";
 import axios from "axios";
 
 function Dashboard() {

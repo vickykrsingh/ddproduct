@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAddress } from '../context/SetCurrentAddress';
+import { useAddress } from '../context/SetCurrentAddress.jsx';
 
 const GeolocationComponent = () => {
   const [location, setLocation] = useState(null);

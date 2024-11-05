@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import AddToCart from "../components/Buttons/AddToCart.js";
-import Layout from "../components/Layout/Layout.js";
+import AddToCart from "../components/Buttons/AddToCart.jsx";
+import Layout from "../components/Layout/Layout.jsx";
 import { useDetail } from "../context/ProductDetail.jsx";
 import { useParams } from "react-router-dom";
 import axios from "axios";

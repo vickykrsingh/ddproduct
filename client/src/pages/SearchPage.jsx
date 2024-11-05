@@ -1,10 +1,10 @@
 import React from "react";
-import Layout from "../components/Layout/Layout.js";
+import Layout from "../components/Layout/Layout.jsx";
 import { useSearch } from "../context/SearchContext.jsx";
 import { Link } from "react-router-dom";
 import SeeMore from "../components/Buttons/SeeMore.jsx";
-import AddToCart from "../components/Buttons/AddToCart.js";
-import { useAuth } from "../context/AuthContext.js";
+import AddToCart from "../components/Buttons/AddToCart.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function SearchPage() {
   const [searchProduct,setSearchProduct] = useSearch([]);

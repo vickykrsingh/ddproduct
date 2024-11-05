@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/Layout/Layout";
-import AdminMenu from "./AdminMenu";
+import Layout from "../../components/Layout/Layout.jsx";
+import AdminMenu from "./AdminMenu.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Loading from "../../components/Loading";
+import Loading from "../../components/Loading.jsx";
 import { TfiReload } from "react-icons/tfi";
-import AddToCart from "../../components/Buttons/AddToCart";
-import SeeMore from "../../components/Buttons/SeeMore";
-import { useAuth } from "../../context/AuthContext";
+import AddToCart from "../../components/Buttons/AddToCart.jsx";
+import SeeMore from "../../components/Buttons/SeeMore.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 import toast from "react-hot-toast";
 
 function Products() {

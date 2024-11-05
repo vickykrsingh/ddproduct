@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/Layout/Layout";
-import AdminMenu from "./AdminMenu";
+import Layout from "../../components/Layout/Layout.jsx";
+import AdminMenu from "./AdminMenu.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Select } from "antd";

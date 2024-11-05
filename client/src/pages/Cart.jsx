@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout/Layout";
-import { useCart } from "../context/CartContext";
-import { useAuth } from "../context/AuthContext";
+import Layout from "../components/Layout/Layout.jsx";
+import { useCart } from "../context/CartContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import GetUserLocationForm from "../components/GetUserLocationForm";
-import { useAddress } from "../context/SetCurrentAddress";
+import GetUserLocationForm from "../components/GetUserLocationForm.jsx";
+import { useAddress } from "../context/SetCurrentAddress.jsx";
 
 function Cart() {
   const [cart, setCart] = useCart();

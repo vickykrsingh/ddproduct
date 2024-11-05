@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Layout from "../../components/Layout/Layout";
-import AdminMenu from "./AdminMenu";
+import Layout from "../../components/Layout/Layout.jsx";
+import AdminMenu from "./AdminMenu.jsx";
 import { ImBin } from "react-icons/im";
 import { FiEdit } from "react-icons/fi";
-import CategoryInput from "../../components/CategoryInput";
+import CategoryInput from "../../components/CategoryInput.jsx";
 import { Modal } from "antd";
 
 function CreateCategory() {

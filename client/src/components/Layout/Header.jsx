@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import Search from "../Search";
-import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext.jsx";
+import Search from "../Search.jsx";
+import { useCart } from "../../context/CartContext.jsx";
 import { Badge } from "antd";
 import { BsCartFill } from 'react-icons/bs'
 

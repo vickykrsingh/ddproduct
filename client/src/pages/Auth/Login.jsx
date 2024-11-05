@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Layout from "../../components/Layout/Layout";
+import Layout from "../../components/Layout/Layout.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext.jsx";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
 export default function Login() {

@@ -6,10 +6,10 @@ import { prices } from "../components/Prices.jsx";
 import { Radio } from "antd";
 import { TfiReload } from "react-icons/tfi";
 import Loading from "../components/Loading.jsx";
-import AddToCart from "../components/Buttons/AddToCart.js";
+import AddToCart from "../components/Buttons/AddToCart.jsx";
 import SeeMore from "../components/Buttons/SeeMore.jsx";
 import { useGlobalLoading } from "../context/GlobalLoading.jsx";
-import { useAuth } from "../context/AuthContext.js";
+import { useAuth } from "../context/AuthContext.jsx";
 import Banner from "../components/Layout/banner1.png"
 import toast from 'react-hot-toast'
 
