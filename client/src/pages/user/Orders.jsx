@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/Layout/Layout.js";
+import Layout from "../../components/Layout/Layout.jsx";
 import UserMenu from "./UserMenu.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useAuth } from "../../context/AuthContext.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 import Loading from "../../components/Loading.jsx";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
