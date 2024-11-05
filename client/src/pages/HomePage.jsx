@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../components/Layout/Layout.js";
+import Layout from "../components/Layout/Layout.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { prices } from "../components/Prices.jsx";
