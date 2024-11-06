@@ -1,30 +1,30 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-function SeeMore({ pId, cId , width=4 , height=1}) {
+import { FaArrowRight } from "react-icons/fa"; // Using arrow icon for "See More"
+
+function SeeMore({ pId, cId, width = 4, height = 1 }) {
   const navigate = useNavigate();
+
   const handleProductDetail = async (e) => {
     e.preventDefault();
     try {
       navigate(`/product-detail/${pId}/${cId}`);
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
 
   return (
     <button
-      className={`bg-purple-700 btn hover:bg-purple-900 btn-sm text-white seeMore-btn ms-2 px-${width} py-${height}`}
-      style={{border:'2px solid #7f8fa6'}}
-      onClick={(e) => {
-        e.preventDefault();
-        handleProductDetail(e);
-      }}
+      onClick={(e) => { e.preventDefault(); handleProductDetail(e); }}
+      className={`w-${width} h-${height} flex items-center justify-center py-3 px-6 bg-primary text-dark font-semibold rounded-md transition-all transform hover:scale-105 hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-dark shadow-md ms-2`}
+      style={{ border: "2px solid #7f8fa6" }}
     >
-      SEE MORE
+      <span className="text-xl mr-2">See More</span>
+      <FaArrowRight className="text-xl" />
     </button>
   );
 }
-
 
 export default SeeMore;

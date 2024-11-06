@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Select } from "antd";
+
 const { Option } = Select;
 
 function AllOrders() {
@@ -14,14 +15,9 @@ function AllOrders() {
   const [search, setSearchChange] = useState("");
   const [searchKey, setSearchKey] = useState("order_id");
   const [auth] = useAuth();
-  const [status] = useState([
-    "Not Process",
-    "Processing",
-    "Shipped",
-    "Delivered",
-    "Cancel",
-  ]);
+  const [status] = useState(["Not Process", "Processing", "Shipped", "Delivered", "Cancel"]);
   const navigate = useNavigate();
+
   const getAllOrder = async () => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/all-admin-order`);
@@ -69,123 +65,91 @@ function AllOrders() {
 
   return (
     <Layout>
-      <div className="text-white container-fluid">
-        <div className="row pt-5">
-          <div className="col-lg-3">
-            <AdminMenu />
-          </div>
-          <div className="col-lg-9">
-            <h2 className="text white mt-2">All Orders</h2>
-            <form
-              className="form control my-2"
-              onSubmit={(e) => handleSearch(e)}
-            >
-              <div className=" mb-1 col-md-6">
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  onChange={(e) => setSearchKey(e.target.value)}
-                >
-                  <option defaultValue={"order_id"}>Order ID</option>
-                  <option value={"payment_id"}>Payment Id</option>
-                  <option value={"buyer"}>User Id</option>
-                  <option value={"status"}>Shipping Status</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="Enter Value"
-                  className="form-control bg-transparent custom-input col-md-6"
-                  value={search}
-                  onChange={(e) => setSearchChange(e.target.value)}
-                />
-              </div>
-              <button type="submit" className="btn btn-outline-success">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row">
+          <AdminMenu />
+          <div className="w-full md:w-3/4 bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">All Orders</h2>
+            <form className="flex flex-col md:flex-row items-center gap-4 mb-6" onSubmit={handleSearch}>
+              <Select
+                className="w-full md:w-1/4 border border-gray-300 rounded-md"
+                onChange={(e) => setSearchKey(e.target.value)}
+                defaultValue="order_id"
+              >
+                <Option value="order_id">Order ID</Option>
+                <Option value="payment_id">Payment ID</Option>
+                <Option value="buyer">User ID</Option>
+                <Option value="status">Shipping Status</Option>
+              </Select>
+              <input
+                type="text"
+                placeholder="Enter Value"
+                className="flex-grow border border-gray-300 p-2 rounded-md text-gray-700"
+                value={search}
+                onChange={(e) => setSearchChange(e.target.value)}
+              />
+              <button type="submit" className="px-4 py-2 bg-dark text-secondary rounded-md">
                 Search
               </button>
             </form>
-            <div className="container-fluid">
-              {order.map((o, i) => (
-                <div className="row admin-order py-1" key={o._id}>
-                  <div className="col-12">
-                    <div>
-                      <b>Order ID : </b>
-                      {o.order_id}
-                    </div>
-                    <div>
-                      <b>Payment ID : </b>
-                      {o.payment_id}
-                    </div>
-                    <div>
-                      <b>User ID : </b>
-                      {o.buyer}
-                    </div>
-                    <div>
-                      <b>Order Time : </b>
-                      {moment(o.createdAt).fromNow()}
-                    </div>
-                    {o.address && <details>
-                      <summary>Address : </summary>
-                      <div className="d-flex flex-column gap-2">
-                      <p>PIN : {o?.address?.postcode}</p>
-                      <p>State : {o?.address?.state}</p>
-                      <p>Country : {o?.address?.country}</p>
-                      <p>Road : {o?.address?.road}</p>
-                      <p>State District : {o?.address?.state_district}</p>
-                      <p>Village : {o?.address?.village}</p>
-                    </div>
-                    </details>}
-                    <div>
-                      <b>Shipping Status : </b>
-                      <Select
-                        bordered={false}
-                        onChange={(value) => handleChangeStatus(o._id, value)}
-                        defaultValue={o?.status}
-                      >
-                        {status.map((s, i) => (
-                          <Option key={i} value={s}>
-                            {s}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
+
+            {order.map((o) => (
+              <div key={o._id} className="border rounded-lg mb-4 p-4 bg-gray-100">
+                <div className="flex flex-col md:flex-row justify-between items-start mb-4">
+                  <div className="text-gray-800">
+                    <p><strong>Order ID:</strong> {o.order_id}</p>
+                    <p><strong>Payment ID:</strong> {o.payment_id}</p>
+                    <p><strong>User ID:</strong> {o.buyer}</p>
+                    <p><strong>Order Time:</strong> {moment(o.createdAt).fromNow()}</p>
                   </div>
-                  <div className="col-12 p-0">
-                    {o.products.map((p, i) => (
-                      <div
-                        className="col-12 p-3 w-100"
-                        key={p._id}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          navigate(
-                            `/product-detail/${p.productId}/${p.categoryId}`
-                          );
-                        }}
-                      >
-                        <div className="card d-flex flex-row p-2 w-100">
-                          <div className="card-image d-flex align-items-center justify-content-center">
-                            <img
-                              src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p.productId}`}
-                              alt="Apple watch"
-                              width={"100px"}
-                              className="rounded-2"
-                            />
-                          </div>
-                          <div className="card-detail ms-4">
-                            <h5 className="m-0 p-0">{p.pName}</h5>
-                            <p className="m-0 p-0">
-                              {p.pDescription.substring(0, 30)}...
-                            </p>
-                            <p className="m-0 p-0">
-                              <b>Price : &#8377;{p.pPrice}</b>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="flex gap-2 mt-2 md:mt-0">
+                    <Select
+                      bordered={false}
+                      onChange={(value) => handleChangeStatus(o._id, value)}
+                      defaultValue={o.status}
+                      className="bg-gray-200 border-none"
+                    >
+                      {status.map((s, i) => (
+                        <Option key={i} value={s}>
+                          {s}
+                        </Option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
-              ))}
-            </div>
+                {o.address && (
+                  <details className="mb-4">
+                    <summary className="text-blue-600 cursor-pointer">Address Details</summary>
+                    <div className="pl-4 text-gray-700">
+                      <p><strong>PIN:</strong> {o.address.postcode}</p>
+                      <p><strong>State:</strong> {o.address.state}</p>
+                      <p><strong>Country:</strong> {o.address.country}</p>
+                      <p><strong>Road:</strong> {o.address.road}</p>
+                      <p><strong>State District:</strong> {o.address.state_district}</p>
+                      <p><strong>Village:</strong> {o.address.village}</p>
+                    </div>
+                  </details>
+                )}
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {o.products.map((p) => (
+                    <div
+                      key={p._id}
+                      onClick={() => navigate(`/product-detail/${p.productId}/${p.categoryId}`)}
+                      className="bg-white p-4 rounded-lg shadow-md cursor-pointer"
+                    >
+                      <img
+                        src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p.productId}`}
+                        alt="Product"
+                        className="rounded-md w-full h-32 object-cover mb-2"
+                      />
+                      <h5 className="font-semibold text-gray-800">{p.pName}</h5>
+                      <p className="text-gray-600 text-sm">{p.pDescription.substring(0, 30)}...</p>
+                      <p className="text-gray-900 font-bold">&#8377; {p.pPrice}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

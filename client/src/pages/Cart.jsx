@@ -13,9 +13,8 @@ function Cart() {
   const [auth] = useAuth();
   const [tot, setTot] = useState(0);
   const navigate = useNavigate();
-  const {currentAddress,setCurrentAddress} = useAddress({})
-  console.log(currentAddress)
-
+  const { currentAddress, setCurrentAddress } = useAddress({});
+  
   const getAllCart = async () => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/cart/get-all-cart`);
@@ -30,24 +29,20 @@ function Cart() {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/cart/get-all-cart`);
       if (data?.cartItem.length > 0) {
         const tot = data?.cartItem.map((t) => t.pPrice);
-        const total = tot.reduce(function (a, b) {
-          return a + b;
-        });
+        const total = tot.reduce((a, b) => a + b);
         setTot(total);
       }
     } catch (error) {
-      toast.error("Request Timeout hi");
+      toast.error("Request Timeout");
     }
   };
 
   const handleRemoveCart = async (event, id) => {
     event.preventDefault();
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_KEY}/api/v1/cart/delete-single-cart`, {
-        id,
-      });
+      const { data } = await axios.post(`${import.meta.env.VITE_APP_API_KEY}/api/v1/cart/delete-single-cart`, { id });
       if (data?.success) {
-        toast.success("Removed From cart Successfully");
+        toast.success("Removed From Cart Successfully");
         getAllCart();
         fetchTotPrice();
       }
@@ -58,39 +53,25 @@ function Cart() {
 
   const handleCheckout = async () => {
     try {
-      const {
-        data: { key },
-      } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/get-key`);
-      console.log(key)
-      const {
-        data: { order },
-      } = await axios.post(
-        `${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/checkout`,
-        {
-          amount: Number(tot),
-        }
-      );
-      console.log(order)
-      var options = {
-        key: key,
+      const { data: { key } } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/get-key`);
+      const { data: { order } } = await axios.post(`${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/checkout`, { amount: Number(tot) });
+      
+      const options = {
+        key,
         amount: order.amount,
         currency: "INR",
         name: "DD Product",
         description: "Test Transaction",
         order_id: order.id,
-        handler: async function (response) {
-          const { data } = await axios.post(
-            `${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/payment-verification`,
-            {
-              payment_id: response.razorpay_payment_id,
-              order_id: response.razorpay_order_id,
-              signature: response.razorpay_signature,
-              cart: cart,
-              tot,
-              address:currentAddress
-            }
-          );
-          console.log(data)
+        handler: async (response) => {
+          const { data } = await axios.post(`${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/payment-verification`, {
+            payment_id: response.razorpay_payment_id,
+            order_id: response.razorpay_order_id,
+            signature: response.razorpay_signature,
+            cart,
+            tot,
+            address: currentAddress,
+          });
           if (data?.success) {
             setCart([]);
             navigate("/dashboard/user/orders");
@@ -101,13 +82,11 @@ function Cart() {
           email: "vickykrsingh27@gmail.com",
           contact: "9508896862",
         },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
         theme: {
           color: "#3399cc",
         },
       };
+      
       const razor = new window.Razorpay(options);
       razor.open();
     } catch (error) {
@@ -118,86 +97,72 @@ function Cart() {
   useEffect(() => {
     getAllCart();
     fetchTotPrice();
-    // eslint-disable-next-line
   }, []);
 
   return (
     <Layout>
-      <div className="container-fluid">
-        <div className="row">
-          {cart.length === 0 ? (
-            <div
-              className="d-flex align-items-center justify-content-center"
-              style={{ width: "100%", height: "100vh" }}
-            >
-              <h3 className="text-center text-info">No item in Your Cart</h3>
-            </div>
-          ) : (
-            <h4 className="text-success my-4">{`You Have ${
-              cart?.length || "0"
-            } items in Your Cart , Please Check it Out`}</h4>
-          )}
-          {cart?.map((p) => (
-            <div className="col-12 p-3" key={p._id}>
-              <div className="card d-flex flex-row p-2">
-                <div className="card-image d-flex align-items-center justify-content-center">
+      <div className="container mx-auto px-4">
+        {cart.length === 0 ? (
+          <div className="flex items-center justify-center h-screen text-center">
+            <h3 className="text-gray-700">No item in Your Cart</h3>
+          </div>
+        ) : (
+          <div className="pt-8">
+            <h4 className="text-teal-700 font-semibold mb-4">
+              You have {cart?.length || "0"} items in your cart, please check it out
+            </h4>
+            <div className="space-y-4">
+              {cart.map((p) => (
+                <div className="flex items-center bg-white shadow rounded-lg p-4" key={p._id}>
                   <img
                     src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p.productId}`}
-                    alt="Apple watch"
-                    width={"100px"}
-                    className="rounded-2"
+                    alt="Product"
+                    className="w-24 h-24 rounded-md mr-4 object-cover"
                   />
+                  <div className="flex-grow">
+                    <h5 className="font-bold text-gray-800">{p.pName}</h5>
+                    <p className="text-sm text-gray-600">{p.pDescription.substring(0, 30)}...</p>
+                    <p className="text-gray-700 font-semibold">Price: &#8377;{p.pPrice}</p>
+                    <button
+                      onClick={(event) => handleRemoveCart(event, p._id)}
+                      className="text-red-600 hover:text-red-800 font-semibold mt-2"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-                <div className="card-detail ms-4">
-                  <h5 className="m-0 p-0">{p.pName}</h5>
-                  <p className="m-0 p-0">
-                    {p.pDescription.substring(0, 30)}...
-                  </p>
-                  <p className="m-0 p-0">
-                    <b>Price : &#8377;{p.pPrice}</b>
-                  </p>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {cart.length > 0 && (
+          <div className="mt-8">
+            <GetUserLocationForm />
+            <div className="flex flex-col items-end mt-4">
+              <h3 className="text-xl font-bold text-gray-800">Total: &#8377;{tot}</h3>
+              {auth?.user ? (
+                <button
+                  onClick={handleCheckout}
+                  className="bg-teal-500 text-white px-4 py-2 rounded-lg mt-4 hover:bg-teal-600"
+                >
+                  Proceed to Checkout
+                </button>
+              ) : (
+                <div className="text-center mt-4">
+                  <h3 className="text-red-500 font-semibold">Oops! You are not logged in</h3>
+                  <p className="text-gray-600">Please login to proceed with checkout</p>
                   <button
-                    className="btn btn-danger btn-sm my-1"
-                    onClick={(event) => handleRemoveCart(event, p._id)}
+                    onClick={() => navigate("/login")}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-red-600"
                   >
-                    Remove
+                    Login
                   </button>
                 </div>
-              </div>
+              )}
             </div>
-          ))}
-        </div>
-        <div className="row d-flex w-100 justify-content-end">
-          <div className="col-sm-5 text-align-content-end  border-0">
-            <GetUserLocationForm/>
-            {auth?.user ? (
-              <div className="col-12 form-control d-flex flex-column align-items-end border-0">
-                <h3>Total : &#8377;{tot}</h3>
-                <button
-                  className="btn btn-outline-success form-control"
-                  onClick={handleCheckout}
-                >
-                  Proceed To Checkout
-                </button>
-              </div>
-            ) : (
-              <div className="col-12 border-2 border-purple-700 px-6 py-3 rounded-2 my-2 text-white d-flex gap-2 justify-content-center flex-column">
-                <h3 className="text-danger">OOPS Your are not Loged In</h3>
-                <h5 className="text-danger text-light">
-                  Please Login to checkout
-                </h5>
-                <button
-                  className="btn btn-outline-danger form-control"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Login
-                </button>
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
     </Layout>
   );

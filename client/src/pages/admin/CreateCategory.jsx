@@ -14,6 +14,7 @@ function CreateCategory() {
   const [categories, setCategory] = useState([]);
   const [updated, setUpdated] = useState("");
   const [selected, setSelected] = useState(null);
+
   const fetchAllCategory = async () => {
     try {
       const category = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/category/get-all-category`);
@@ -24,6 +25,7 @@ function CreateCategory() {
       toast.error("Something Went Wrong while Fetching All Category");
     }
   };
+
   const createCategoryHandler = async (e) => {
     e.preventDefault();
     try {
@@ -31,7 +33,7 @@ function CreateCategory() {
         name,
       });
       if (newCategory?.data?.success) {
-        toast.success("product created successfully");
+        toast.success("Category created successfully");
         fetchAllCategory();
         setName("");
       }
@@ -82,26 +84,29 @@ function CreateCategory() {
   const showModal = () => {
     setIsModalOpen(true);
   };
+
   const handleOk = () => {
     setIsModalOpen(false);
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   return (
     <Layout>
-      <div className="text-white container-fluid">
-        <div className="row pt-5">
-          <div className="col-lg-3">
+      <div className="container mx-auto px-4 py-8 bg-secondary rounded-lg shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+          <div className="col-span-1">
             <AdminMenu />
           </div>
-          <div className="col-lg-9">
+          <div className="col-span-3">
             <Modal
               open={isModalOpen}
               onOk={handleOk}
               onCancel={handleCancel}
               footer={null}
+              className="bg-secondary p-4"
             >
               <CategoryInput
                 createCategoryHandler={handleUpdate}
@@ -110,46 +115,44 @@ function CreateCategory() {
               />
             </Modal>
 
-            <h2 className="text white mb-3">Create Category</h2>
+            <h2 className="text-2xl font-semibold text-dark mb-5">Create Category</h2>
             <CategoryInput
               createCategoryHandler={createCategoryHandler}
               name={name}
               setName={setName}
             />
 
-            <div>
-              <h4 className="mt-2">All Categories : </h4>
-
-              <div>
-                <table className="table text-white border-warning">
-                  <thead className="border-warning">
-                    <tr>
-                      <th>S.No</th>
-                      <th scope="col">Category Name</th>
-                      <th scope="col">Actions</th>
+            <div className="mt-6">
+              <h4 className="text-xl text-dark mb-4">All Categories</h4>
+              <div className="overflow-x-auto bg-secondary rounded-lg shadow-lg">
+                <table className="table-auto w-full text-dark border-collapse">
+                  <thead className="bg-secondary text-lg">
+                    <tr className="text-dark">
+                      <th className="px-4 py-2 text-center">S.No</th>
+                      <th className="px-4 py-2">Category Name</th>
+                      <th className="px-4 py-2">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="table-group-divider">
+                  <tbody className="bg-dark text-secondary">
                     {categories.map((c, index) => (
                       <tr key={c._id}>
-                        <td style={{ width: "25px" }}>{index + 1}</td>
-                        <td>{c.name}</td>
-                        <td className="">
-                          <div className="d-flex align-items-center justify-content-center">
+                        <td className="px-4 py-2 text-center">{index + 1}</td>
+                        <td className="px-4 py-2">{c.name}</td>
+                        <td className="px-4 py-2 flex justify-center items-center gap-4">
                           <FiEdit
+                            className="cursor-pointer text-secondary hover:text-primary"
                             onClick={() => {
                               showModal();
                               setUpdated(c.name);
                               setSelected(c);
                             }}
-                          />{" "}
+                          />
                           <ImBin
-                            style={{ marginLeft: "20px" }}
-                            onClick={(e) => {
+                            className="cursor-pointer text-red-500 hover:text-red-700"
+                            onClick={() => {
                               deleteCategoryHandler(c._id);
                             }}
-                            />{" "}
-                            </div>
+                          />
                         </td>
                       </tr>
                     ))}

@@ -7,53 +7,49 @@ import AddToCart from "../components/Buttons/AddToCart.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 function SearchPage() {
-  const [searchProduct,setSearchProduct] = useSearch([]);
-  const [auth,setAuth] = useAuth()
+  const [searchProduct, setSearchProduct] = useSearch([]);
+  const [auth, setAuth] = useAuth();
+
   return (
     <Layout>
-      <div className="col">
-        <div className="container pt-2">
-          <h4 className="text-white">All Products</h4>
-          {searchProduct.length <= 0 ? (
-            <h2 className="text-danger">No Product Found</h2>
-          ) : (
-            <div className="row d-flex justify-content-around">
-              {searchProduct.map((p) => (
-                <Link
-                  to={auth?.user?.role===1 ? (`/dashboard/admin/product/${p._id}`) : (`/product-detail/${p._id}/${p.category}`)}
-                  className="card bg-purple-800 text-white p-1 col-lg-4 col-md-6 col-sm-12 m-2 text-decoration-none"
-                  style={{ width: "17rem", height: "26rem" }}
-                  key={p._id}
-                >
-                  <img
-                    className="card-img-top"
-                    src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p._id}`}
-                    alt="Card_image_cap"
-                  />
-                  <div className="card-body p-1">
-                    <h5 className="card-title">{p.name}</h5>
-                    <p className="card-text fw-light">
-                      {p.description.substring(0, 25)}...
-                    </p>
+      <div className="container mx-auto pt-8 px-4">
+        <h4 className="text-3xl font-semibold text-dark mb-8">All Products</h4>
+        {searchProduct.length <= 0 ? (
+          <h2 className="text-2xl font-bold text-danger">No Product Found</h2>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {searchProduct.map((p) => (
+              <Link
+                to={
+                  auth?.user?.role === 1
+                    ? `/dashboard/admin/product/${p._id}`
+                    : `/product-detail/${p._id}/${p.category}`
+                }
+                className="card bg-secondary-800 text-dark rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105"
+                key={p._id}
+              >
+                <img
+                  className="w-full h-56 object-cover"
+                  src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p._id}`}
+                  alt="Product Image"
+                />
+                <div className="p-4 text-dark">
+                  <h5 className="text-xl font-semibold">{p.name}</h5>
+                  <p className="text-sm text-dark">{p.description.substring(0, 25)}...</p>
+                </div>
+                <ul className="list-group list-group-flush">
+                  <li className="bg-secondary-900 text-dark p-2 font-semibold">
+                    &#8377;{p.price} | Stock: {p.quantity} items
+                  </li>
+                  <div className="flex justify-between items-center p-4">
+                    <SeeMore pId={p._id} cId={p.category} />
+                    <AddToCart product={p} width={2} height={1} />
                   </div>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item bg-purple-900 text-white p-1 fw-bold">
-                    &#8377;{`${p.price} | Stock ${p.quantity} items`}
-                    </li>
-                    <div className="d-flex mt-2 mb-2">
-                      <div className="me-3">
-                        <SeeMore pId={p._id} cId={p.category} />
-                      </div>
-                      <div>
-                        <AddToCart product={p} width={2} height={1} />
-                      </div>
-                    </div>
-                  </ul>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
+                </ul>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </Layout>
   );

@@ -25,65 +25,65 @@ function ForgetPassword() {
         toast.error(res.data.message);
       }
     } catch (error) {
-      toast.error("something went wrong!");
+      toast.error("Something went wrong!");
     }
   };
+
   return (
     <Layout title="ECommerce - Forget Password">
-      <div className="bg-purple-900 w-screen h-screen flex flex-col items-center justify-center px-3">
+      <div className="bg-dark min-h-screen flex items-center justify-center px-4">
         <form
-          onSubmit={(e) => forgetPassword(e)}
-          className="w-full max-w-2xl h-1/2 bg-purple-700 px-5 py-5 rounded-md flex flex-col gap-5"
+          onSubmit={forgetPassword}
+          className="w-full max-w-md bg-secondary p-6 rounded-lg shadow-lg space-y-6"
         >
-          <div className="w-full flex justify-center items-center">
-            <h2 className="text-3xl font-semibold text-white">
-              FORGET PASSWORD
-            </h2>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor className="text-white font-semibold tracking-wider">
-              Enter Your Email
-            </label>
+          <h2 className="text-2xl font-bold text-dark text-center">Forget Password</h2>
+          
+          {/* Email Input */}
+          <div>
+            <label className="block text-dark font-medium mb-2">Email Address</label>
             <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              type="text"
               placeholder="abc@gmail.com"
-              className="rounded-lg px-4 py-1 w-full h-10 focus:outline-none focus:shadow-2xl"
+              className="w-full p-2 border border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor className="text-white font-semibold tracking-wider">
-              Enter Your Answer
-            </label>
+
+          {/* Answer Input */}
+          <div>
+            <label className="block text-dark font-medium mb-2">Security Answer</label>
             <input
+              type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              type="text"
-              placeholder="answer"
-              className="rounded-lg px-4 py-1 w-full h-10 focus:outline-none focus:shadow-2xl"
+              placeholder="Answer"
+              className="w-full p-2 border border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
             />
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor className="text-white font-semibold tracking-wider">
-              Enter Your New Password
-            </label>
+
+          {/* New Password Input */}
+          <div>
+            <label className="block text-dark font-medium mb-2">New Password</label>
             <input
+              type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              type="password"
               placeholder="********"
-              className="rounded-lg px-4 py-1 w-full h-10 tracking-widest focus:outline-none focus:shadow-2xl"
+              className="w-full p-2 border border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
             />
           </div>
-          <div className="flex justify-between">
-            <button
-              type="submit"
-              className="bg-white text-purple-900 font-semibold tracking-wider rounded-full w-full h-10 border-2 border-purple-600 hover:bg-purple-600 hover:text-white transition duration-150 focus:outline-none"
-            >
-              FORGET PASSWORD
-            </button>
-          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-primary text-dark py-2 rounded-lg hover:bg-dark hover:text-primary transition duration-200"
+          >
+            Reset Password
+          </button>
         </form>
       </div>
     </Layout>

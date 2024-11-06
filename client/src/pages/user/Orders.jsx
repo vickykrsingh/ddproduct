@@ -12,21 +12,22 @@ function Orders() {
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const [auth] = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const getAllOrder = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/all-order`);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_API_KEY}/api/v1/payment/all-order`
+      );
       if (data?.success) {
         setOrder(data?.orders);
         setLoading(false);
       }
     } catch (error) {
-      toast.error("Error while fetching your all order");
+      toast.error("Error while fetching your orders");
     }
   };
-
-  // getAllOrder()
 
   useEffect(() => {
     if (auth?.token) {
@@ -35,90 +36,84 @@ function Orders() {
   }, [auth?.token]);
 
   return (
-    <Layout>
-      <div className="text-white container-fluid">
-        <div className="row pt-5">
-          <div className="col-lg-3">
+    <Layout title="Your Orders">
+      <div className="container mx-auto py-8 text-dark">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar */}
+          <div className="lg:w-1/4">
             <UserMenu />
           </div>
-          {loading ? (
-            <Loading />
-          ) : (
-            <div className="col-lg-9 p-0">
-              <h2 className="mt-3 mt-md-0 ms-2 text-success">Your all orders</h2>
-              <div className="container-fluid">
-                {order.map((o, i) => (
-                  <div className="row user-order" key={o._id}>
-                    <div className="col-12">
-                      <div>
-                        <b>Order Count : </b>
-                        {i + 1}
-                      </div>
-                      <div>
-                        <b>Order Id : </b>
-                        {o.order_id}
-                      </div>
-                      <div>
-                        <b>Item Count : </b>
-                        {o.products.length}
-                      </div>
-                      <div>
-                        <b>Total Price : </b>
-                        {o.totalPrice}
-                      </div>
-                      <div>
-                        <b>Shipping Status : </b>
-                        {o.status}
-                      </div>
-                      {o.address && <details>
-                      <summary>Address : </summary>
-                      <div className="d-flex flex-column gap-2">
-                      <p>PIN : {o?.address?.postcode}</p>
-                      <p>State : {o?.address?.state}</p>
-                      <p>Country : {o?.address?.country}</p>
-                      <p>Road : {o?.address?.road}</p>
-                      <p>State District : {o.address.state_district}</p>
-                      <p>Village : {o?.address?.village}</p>
-                    </div>
-                    </details>}
-                      <div>
-                        <b>Time : </b>
-                        {moment(o.createdAt).fromNow()}
-                      </div>
-                    </div>
-                    <div className="col-12 p-0">
-                      {o.products.map((p, i) => (
-                        <div className="col-12 p-3 w-100" key={p._id} onClick={(e)=>{
-                          e.preventDefault()
-                          navigate(`/product-detail/${p.productId}/${p.categoryId}`)
-                        }}>
-                          <div className="card d-flex flex-row p-2 w-100">
-                            <div className="card-image d-flex align-items-center justify-content-center">
-                              <img
-                                src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p.productId}`}
-                                alt="Apple watch"
-                                width={"100px"}
-                                className="rounded-2"
-                              />
-                            </div>
-                            <div className="card-detail ms-4">
-                              <h5 className="m-0 p-0">{p.pName}</h5>
-                              <p className="m-0 p-0">
-                                {p.pDescription.substring(0, 30)}...
-                              </p>
-                              <p className="m-0 p-0">
-                                <b>Price : &#8377;{p.pPrice}</b>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+
+          {/* Orders Content */}
+          <div className="lg:w-3/4 bg-dark p-6 rounded-lg shadow-lg text-white">
+            <h2 className="text-2xl font-semibold text-primary mb-4">Your Orders</h2>
+            {loading ? (
+              <Loading />
+            ) : (
+              order.length>0 ? <div className="space-y-6">
+              {order.map((o, i) => (
+                <div key={o._id} className="border-b border-secondary pb-4 mb-4">
+                  <div className="text-secondary font-medium">
+                    Order #{i + 1}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                  <p className="mt-1">
+                    <b>Order ID:</b> {o.order_id}
+                  </p>
+                  <p>
+                    <b>Items Count:</b> {o.products.length}
+                  </p>
+                  <p>
+                    <b>Total Price:</b> ₹{o.totalPrice}
+                  </p>
+                  <p>
+                    <b>Shipping Status:</b> {o.status}
+                  </p>
+                  <p>
+                    <b>Time:</b> {moment(o.createdAt).fromNow()}
+                  </p>
+                  {o.address && (
+                    <details className="mt-2">
+                      <summary className="text-primary cursor-pointer">Address</summary>
+                      <div className="ml-4 mt-2 text-sm text-secondary space-y-1">
+                        <p>PIN: {o?.address?.postcode}</p>
+                        <p>State: {o?.address?.state}</p>
+                        <p>Country: {o?.address?.country}</p>
+                        <p>Road: {o?.address?.road}</p>
+                        <p>District: {o.address.state_district}</p>
+                        <p>Village: {o?.address?.village}</p>
+                      </div>
+                    </details>
+                  )}
+
+                  {/* Products within the Order */}
+                  <div className="mt-4 grid grid-cols-1 gap-4">
+                    {o.products.map((p) => (
+                      <div
+                        key={p._id}
+                        className="flex items-center bg-secondary p-3 rounded-lg shadow cursor-pointer hover:bg-secondary-dark transition duration-200"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/product-detail/${p.productId}/${p.categoryId}`);
+                        }}
+                      >
+                        <img
+                          src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p.productId}`}
+                          alt={p.pName}
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                        <div className="ml-4 text-dark">
+                          <h5 className="font-semibold">{p.pName}</h5>
+                          <p className="text-sm">{p.pDescription.substring(0, 30)}...</p>
+                          <p className="font-bold">Price: ₹{p.pPrice}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div> : <h1>No order found</h1>
+            )}
+          </div>
         </div>
       </div>
     </Layout>

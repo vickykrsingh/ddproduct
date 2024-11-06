@@ -3,15 +3,14 @@ import Layout from "../../components/Layout/Layout.jsx";
 import AdminMenu from "./AdminMenu.jsx";
 import { useNavigate } from "react-router-dom";
 import { Select } from "antd";
-
 import axios from "axios";
 import toast from "react-hot-toast";
+
 const { Option } = Select;
 
 function CreateProduct() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  // =======================State to store from data============================
   const [photo, setPhoto] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -20,10 +19,11 @@ function CreateProduct() {
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
 
-  // ========================Fetch All Category=========================
   const fetchAllCategory = async () => {
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/category/get-all-category`);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_APP_API_KEY}/api/v1/category/get-all-category`
+      );
       if (data?.success) {
         setCategories(data?.allCategory);
       }
@@ -31,11 +31,11 @@ function CreateProduct() {
       toast.error("Something Went Wrong while Fetching All Category");
     }
   };
-  // =====================Use Effect to fetch all category after component rendered first time=======================
+
   useEffect(() => {
     fetchAllCategory();
   }, []);
-  // ============================Handler to send form data to the server==============================
+
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -47,6 +47,7 @@ function CreateProduct() {
       productData.append("photo", photo);
       productData.append("category", category);
       productData.append("shipping", shipping);
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_APP_API_KEY}/api/v1/product/create-product`,
         productData
@@ -64,106 +65,97 @@ function CreateProduct() {
 
   return (
     <Layout>
-      <div className="text-white container-fluid">
-        <div className="row pt-5">
-          <div className="col-lg-3">
+      <div className="container mx-auto p-4 lg:p-8 text-gray-800 bg-secondary">
+        <div className="lg:flex gap-6">
+          <div className="lg:w-1/4">
             <AdminMenu />
           </div>
-          <div className="col-lg-9">
-            <h2 className="text white">Create Product</h2>
-
-            <div className="m-1 w-75">
+          <div className="lg:w-3/4">
+            <h2 className="text-2xl font-semibold text-dark mb-4">Create Product</h2>
+            <div className="bg-secondary rounded-lg space-y-4">
               <Select
-                bordered={false}
                 placeholder="Select a Category"
                 showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
+                className="w-full mb-3"
+                onChange={(value) => setCategory(value)}
               >
-                {categories?.map((c) => (
+                {categories.map((c) => (
                   <Option key={c._id} value={c._id}>
                     {c.name}
                   </Option>
                 ))}
               </Select>
-              <div className="mb-3 w-100">
-                <label className="btn btn-outline-secondary w-100">
+              
+              <div className="mb-3">
+                <label className="block w-full border-2 border-dashed border-gray-300 py-4 rounded-lg text-center cursor-pointer">
                   {photo ? photo.name : "Upload Photo"}
                   <input
                     type="file"
                     name="photo"
                     accept="image/*"
                     onChange={(e) => setPhoto(e.target.files[0])}
-                    hidden
+                    className="hidden"
                   />
                 </label>
               </div>
-              <div className="mb-3">
-                {photo && (
-                  <div className="text-center">
-                    <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                )}
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={name}
-                  placeholder="Write a name"
-                  className="form-control"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={description}
-                  placeholder="Write Description"
-                  className="form-control"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="number"
-                  value={price}
-                  placeholder="Enter Product Price"
-                  className="form-control"
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={quantity}
-                  placeholder="Enter Product Quantity"
-                  className="form-control"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
+              
+              {photo && (
+                <div className="text-center mb-3">
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt="product_photo"
+                    className="w-48 h-48 object-cover mx-auto"
+                  />
+                </div>
+              )}
+              
+              <input
+                type="text"
+                value={name}
+                placeholder="Write a name"
+                className="w-full border border-gray-300 p-2 rounded-lg"
+                onChange={(e) => setName(e.target.value)}
+              />
+              
+              <input
+                type="text"
+                value={description}
+                placeholder="Write Description"
+                className="w-full border border-gray-300 p-2 rounded-lg"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              
+              <input
+                type="number"
+                value={price}
+                placeholder="Enter Product Price"
+                className="w-full border border-gray-300 p-2 rounded-lg"
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              
+              <input
+                type="text"
+                value={quantity}
+                placeholder="Enter Product Quantity"
+                className="w-full border border-gray-300 p-2 rounded-lg"
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+              
               <Select
-                bordered={false}
                 placeholder="Select Shipping"
                 size="large"
                 showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setShipping(value);
-                }}
+                className="w-full mb-3"
+                onChange={(value) => setShipping(value)}
               >
                 <Option value="0">No</Option>
                 <Option value="1">Yes</Option>
               </Select>
-            </div>
-            <div className="mb-3">
-              <button className="btn btn-warning" onClick={handleCreate}>
+              
+              <button
+                className="w-full bg-dark text-white p-3 rounded-lg font-semibold hover:bg-primary-dark transition duration-200"
+                onClick={handleCreate}
+              >
                 CREATE PRODUCT
               </button>
             </div>

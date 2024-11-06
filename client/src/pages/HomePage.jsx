@@ -10,8 +10,8 @@ import AddToCart from "../components/Buttons/AddToCart.jsx";
 import SeeMore from "../components/Buttons/SeeMore.jsx";
 import { useGlobalLoading } from "../context/GlobalLoading.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
-import Banner from "../components/Layout/banner1.png"
-import toast from 'react-hot-toast'
+import Banner from "../components/Layout/banner1.png";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -22,9 +22,8 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [globalLoading, setGlobalLoading] = useGlobalLoading();
-  const [auth,setAuth] = useAuth()
+  const [auth, setAuth] = useAuth();
 
-  console.log(import.meta.env.VITE_APP_API_KEY)
   useEffect(() => {
     if (!checked.length || !radio.length) {
       totalProductCount();
@@ -34,10 +33,9 @@ export default function Home() {
 
   useEffect(() => {
     getAllProduct();
-    // eslint-disable-next-line
   }, []);
 
-  const getAllProduct = async (req, res) => {
+  const getAllProduct = async () => {
     try {
       setLoading(true);
       setGlobalLoading(true);
@@ -48,7 +46,7 @@ export default function Home() {
         setProducts(data?.products);
       }
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
 
@@ -59,9 +57,10 @@ export default function Home() {
         setCategory(category?.data?.allCategory);
       }
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
+
   const handleCategoryFilter = (value, id) => {
     let allProduct = [...checked];
     if (value) {
@@ -72,22 +71,20 @@ export default function Home() {
     setChecked(allProduct);
   };
 
-  const totalProductCount = async (req, res) => {
+  const totalProductCount = async () => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-count`);
+      console.log(data)
       setTotal(data?.total);
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
 
   useEffect(() => {
-    if (page === 1) {
-      return;
-    } else {
+    if (page > 1) {
       loadMore();
     }
-    // eslint-disable-next-line
   }, [page]);
 
   const loadMore = async () => {
@@ -95,14 +92,14 @@ export default function Home() {
       const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-list/${page}`);
       setProducts([...products, ...data?.products]);
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
 
   useEffect(() => {
     if (checked.length || radio.length) filterProducts();
-    // eslint-disable-next-line
   }, [checked, radio]);
+
   const filterProducts = async () => {
     try {
       const { data } = await axios.post(`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-filter`, {
@@ -111,135 +108,105 @@ export default function Home() {
       });
       setProducts(data?.products);
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
+
   return (
-    <>
-      <Layout title={"ECommerce - Home"}>
-        {globalLoading ? (
-          <Loading />
-        ) : (
-          <div className="HomePage container-fluid">
-            <div className="row m-0 p-0">
-              <img src={Banner} alt="Banner" className="rounded-2 m-0 p-0" />
-            </div>
-            <div className="row">
-              <div className="col-lg-12 filter-section">
-                <div className="accordion my-2" id="accordionExample">
-                  <div className="accordion-item">
-                    <h2 className="accordion-header" id="headingOne">
-                      <button
-                        className="accordion-button text-white bg-purple-800"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne"
-                        aria-expanded="true"
-                        aria-controls="collapseOne"
-                      >
-                        Filter Product
-                      </button>
-                    </h2>
-                    <div
-                      id="collapseOne"
-                      className="accordion-collapse collapse bg-purple-800"
-                      aria-labelledby="headingOne"
-                      data-bs-parent="#accordionExample"
-                    >
-                      <div className="accordion-body bg-purple-900 text-white">
-                        <div className="d-lg-flex">
-                        {category?.map((c) => (
-                          <div className="form-check mx-2" key={c._id}>
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value={c.slug}
-                              onChange={(e) => {
-                                handleCategoryFilter(e.target.checked, c._id);
-                              }}
-                            />
-                            <label className="form-check-label text-white">{c.name}</label>
-                          </div>
-                        ))}
-                        </div>
-                        <br/>
-                        <Radio.Group onChange={(e) => setRadio(e.target.value)} className="d-md-flex">
-                          {prices.map((p) => (
-                            <div key={p._id} className="mx-2">
-                              <Radio value={p.array} className="text-white">
-                                {p.name}
-                              </Radio>
-                            </div>
-                          ))}
-                        </Radio.Group>
-                      </div>
-                    </div>
+    <Layout title={"ECommerce - Home"}>
+      {globalLoading ? (
+        <Loading />
+      ) : (
+        <div className="container mx-auto px-4 py-8">
+          {/* Banner Section */}
+          <div className="mb-10">
+            <img src={Banner} alt="Banner" className="rounded-lg w-full h-64 object-cover" />
+          </div>
+          
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Sidebar Filter */}
+            <div className="md:w-1/4 p-6 bg-secondary text-dark rounded-lg shadow-md">
+              <h2 className="text-2xl font-semibold mb-6">Filter Products</h2>
+              
+              {/* Category Filter */}
+              <div className="space-y-4">
+                {category?.map((c) => (
+                  <div key={c._id} className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox text-primary"
+                      onChange={(e) => handleCategoryFilter(e.target.checked, c._id)}
+                    />
+                    <label className="text-dark">{c.name}</label>
                   </div>
-                </div>
+                ))}
               </div>
-              <div className="col-lg-12">
-                <div className="container pt-2">
-                  <h4>All Products</h4>
-                  {loading ? (
-                    <Loading />
+              
+              {/* Price Filter */}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold">Price Range</h3>
+                <Radio.Group onChange={(e) => setRadio(e.target.value)} className="flex flex-col mt-2 space-y-2">
+                  {prices.map((p) => (
+                    <Radio key={p._id} value={p.array} className="text-dark">
+                      {p.name}
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </div>
+            </div>
+            
+            {/* Products List */}
+            <div className="md:w-3/4">
+              <h4 className="text-3xl font-semibold mb-8">All Products</h4>
+              {loading ? (
+                <Loading />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {products.length === 0 ? (
+                    <h1 className="text-error text-center col-span-full">No Products Found</h1>
                   ) : (
-                    <div className="row d-flex justify-content-around">
-                      {products.length === 0 ? (
-                        <h1 className="text-danger text-center">
-                          No Products Found
-                        </h1>
-                      ) : (
-                        products.map((p) => (
-                          <Link
-                            to={auth?.user?.role===1 ? (`/dashboard/admin/product/${p._id}`) : (`/product-detail/${p._id}/${p.category}`)}
-                            className="card bg-purple-500 p-1 col-lg-4 col-md-6 col-sm-12 m-2 text-decoration-none text-white"
-                            style={{ width: "17rem", height: "26rem" }}
-                            key={p._id}
-                          >
-                            <img
-                              className="card-img-top rounded-2"
-                              src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p._id}`}
-                              alt="Card_image_cap"
-                            />
-                            <div className="card-body p-1">
-                              <h5 className="card-title">{p.name}</h5>
-                              <p className="card-text fw-light">
-                                {p.description.substring(0, 25)}...
-                              </p>
-                            </div>
-                            <ul className="list-group list-group-flush p-0 m-0">
-                              <li className="list-group-item bg-purple-800 rounded-2 text-white p-1 fw-bold card-footer p-0 m-0">
-                              &#8377;{`${p.price} | Stock ${p.quantity} items`}
-                              </li>
-                              <div className="d-flex mt-2 mb-2">
-                                <AddToCart product={p} />
-                                <SeeMore pId={p._id} cId={p.category} />
-                              </div>
-                            </ul>
-                          </Link>
-                        ))
-                      )}
-                    </div>
+                    products.map((p) => (
+                      <Link
+                        to={auth?.user?.role === 1 ? `/dashboard/admin/product/${p._id}` : `/product-detail/${p._id}/${p.category}`}
+                        className="bg-primary rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 p-6"
+                        key={p._id}
+                      >
+                        <img
+                          src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p._id}`}
+                          alt={p.name}
+                          className="w-full h-48 object-cover rounded-lg"
+                        />
+                        <div className="mt-4">
+                          <h5 className="text-lg font-semibold text-dark">{p.name}</h5>
+                          <p className="text-secondary mt-1">{p.description.substring(0, 25)}...</p>
+                          <div className="text-lg font-bold text-dark mt-2">&#8377;{p.price} | Stock {p.quantity} items</div>
+                          <div className="flex justify-between mt-4">
+                            <AddToCart product={p} />
+                            <SeeMore pId={p._id} cId={p.category} />
+                          </div>
+                        </div>
+                      </Link>
+                    ))
                   )}
                 </div>
-                {products && products.length < total && (
-                  <div className="text-center m-4">
-                    <button
-                      className="btn bg-transparent text-white fw-bolder fs-4"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPage(page + 1);
-                      }}
-                    >
-                      {loading ? <Loading /> : <TfiReload />}
-                    </button>
-                  </div>
-                )}
-              </div>
+              )}
+              {products.length < total && (
+                <div className="text-center mt-8">
+                  <button
+                    className="flex items-center justify-center text-dark bg-transparent hover:bg-dark px-4 py-2 rounded-lg font-semibold"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPage(page + 1);
+                    }}
+                  >
+                    {loading ? <Loading /> : <TfiReload className="mr-2" />} Load More
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </Layout>
-    </>
+        </div>
+      )}
+    </Layout>
   );
 }

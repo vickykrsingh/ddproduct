@@ -30,94 +30,98 @@ function Profile() {
         phone,
         address,
       });
+      
       if (data.error) {
         toast.error(data?.error);
       } else {
         setAuth({ ...auth, user: data?.updateUser });
-        let ls = localStorage.getItem("auth");
-        ls = JSON.parse(ls);
-        ls.user = data.updateUser;
-        localStorage.setItem("auth", JSON.stringify(ls));
-        toast.success("Profile Update Successfully.");
+        localStorage.setItem("auth", JSON.stringify({ ...auth, user: data.updateUser }));
+        toast.success("Profile Updated Successfully");
       }
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout. Please try again.");
     }
   };
 
   return (
     <Layout>
-      <div className="text-white container-fluid">
-        <div className="row pt-5">
-          <div className="col-lg-3">
+      <div className="container mx-auto px-4 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar */}
+          <div className="col-span-1">
             <UserMenu />
           </div>
-          <div className="col-lg-9">
-            <h2 className="fw-bold text-warning text-center py-3">
+          
+          {/* Profile Update Form */}
+          <div className="col-span-1 lg:col-span-3 bg-dark p-6 rounded-lg shadow-lg">
+            <h2 className="text-3xl font-semibold text-primary mb-6 text-center">
               Update Profile
             </h2>
-            <div className="register">
-              <form onSubmit={(e) => updateProfile(e)}>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="exampleInputPassword1"
-                    placeholder="Enter Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="exampleInputPassword2"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="exampleInputPassword3"
-                    placeholder="Enter Phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="exampleInputPassword4"
-                    placeholder="Enter Address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-outline-warning fw-bold form-control"
-                >
-                  Update Your Profile
-                </button>
-              </form>
-            </div>
+            <form onSubmit={updateProfile} className="space-y-4">
+              {/* Name Field */}
+              <div>
+                <input
+                  type="text"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Enter Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              
+              {/* Email Field (disabled) */}
+              <div>
+                <input
+                  type="email"
+                  className="w-full p-3 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                  placeholder="Enter Email"
+                  value={email}
+                  disabled
+                />
+              </div>
+              
+              {/* Password Field */}
+              <div>
+                <input
+                  type="password"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              
+              {/* Phone Field */}
+              <div>
+                <input
+                  type="text"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Enter Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              
+              {/* Address Field */}
+              <div>
+                <input
+                  type="text"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Enter Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full p-3 mt-4 bg-primary text-dark font-semibold rounded-md hover:bg-dark hover:bg-primary transition-colors"
+              >
+                Update Your Profile
+              </button>
+            </form>
           </div>
         </div>
       </div>

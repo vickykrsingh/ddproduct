@@ -6,7 +6,7 @@ function GetUserLocationForm() {
   const { currentAddress, setCurrentAddress } = useAddress({});
   const [location, setLocation] = useState(null);
   const [locationStatus, setLocationStatus] = useState(false);
-  console.log(currentAddress)
+
   const handleInputChange = (fieldName) => (event) => {
     const { value } = event.target;
 
@@ -16,6 +16,7 @@ function GetUserLocationForm() {
       [fieldName]: value,
     }));
   };
+
   useEffect(() => {
     if (locationStatus) {
       if (navigator.geolocation) {
@@ -30,7 +31,6 @@ function GetUserLocationForm() {
             try {
               const response = await axios.get(apiUrl);
               const firstResult = response.data.results[0];
-              console.log(response)
 
               if (firstResult) {
                 const {
@@ -69,86 +69,83 @@ function GetUserLocationForm() {
       }
     }
   }, [locationStatus]);
-  const handleGetLocation = (e) =>{
-    e.preventDefault()
-    setLocationStatus((prev)=>prev=!prev)
-    if(!locationStatus){
-        setCurrentAddress({})
-        console.log(currentAddress)
+
+  const handleGetLocation = (e) => {
+    e.preventDefault();
+    setLocationStatus((prev) => !prev);
+    if (!locationStatus) {
+      setCurrentAddress({});
     }
-  }
+  };
+
   return (
-    <>
-      <form className="bg-white p-4">
+    <form className="bg-white p-6 rounded-lg shadow-md max-w-md ml-auto">
+      <div className="space-y-4">
         <div className="form-group">
           <input
-          onChange={handleInputChange('postcode')}
+            onChange={handleInputChange("postcode")}
             value={currentAddress.postcode}
             type="text"
-            className="form-control mt-3"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="PIN Code"
           />
         </div>
         <div className="form-group">
           <input
-          onChange={handleInputChange('country')}
+            onChange={handleInputChange("country")}
             value={currentAddress.country}
             type="text"
-            className="form-control mt-3"
-            id="exampleInputPassword1"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="Country"
           />
         </div>
         <div className="form-group">
           <input
-          onChange={handleInputChange('state')}
+            onChange={handleInputChange("state")}
             value={currentAddress.state}
             type="text"
-            className="form-control mt-3"
-            id="exampleInputPassword1"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="Street"
           />
         </div>
         <div className="form-group">
           <input
-          onChange={handleInputChange('state_district')}
+            onChange={handleInputChange("state_district")}
             value={currentAddress.state_district}
             type="text"
-            className="form-control mt-3"
-            id="exampleInputPassword1"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="State"
           />
         </div>
         <div className="form-group">
           <input
-          onChange={handleInputChange('village')}
+            onChange={handleInputChange("village")}
             value={currentAddress.village}
             type="text"
-            className="form-control mt-3"
-            id="exampleInputPassword1"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="Village"
           />
         </div>
         <div className="form-group">
           <input
-          onChange={handleInputChange('road')}
+            onChange={handleInputChange("road")}
             value={currentAddress.road}
             type="text"
-            className="form-control mt-3"
-            id="exampleInputPassword1"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="District"
           />
         </div>
-        {!locationStatus && <button onClick={(e)=>handleGetLocation(e)} className="btn btn-primary mt-4">
-          Get CurrentLocation
-        </button>}
-      </form>
-    </>
+        {!locationStatus && (
+          <button
+            onClick={handleGetLocation}
+            className="w-full py-3 bg-dark text-white rounded-md hover:bg-secondary hover:text-dark transition-all mt-4 focus:outline-none focus:ring-2 focus:ring-dark"
+          >
+            Get Current Location
+          </button>
+        )}
+      </div>
+    </form>
   );
 }
 
 export default GetUserLocationForm;
-
-// country postalcode street state village state_district

@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 
 function Search() {
   const [values, setValues] = useState("");
-  const [searchProduct,setSearchProduct] = useSearch([]);
+  const [searchProduct, setSearchProduct] = useSearch([]);
   const navigate = useNavigate();
+
   const handleSearch = async (e) => {
     try {
       e.preventDefault();
@@ -17,26 +18,27 @@ function Search() {
         navigate("/search");
       }
     } catch (error) {
-      toast.error("Request Timeout")
+      toast.error("Request Timeout");
     }
   };
 
   return (
-    <div className="ml-auto">
+    <div className="w-full max-w-md mx-auto">
       <form
-        className="d-flex ms-4 mt-1 mb-1"
-        role="search"
+        className="flex flex-col sm:flex-row sm:items-center bg-secondary shadow-md"
         onSubmit={handleSearch}
       >
         <input
-          className="form-control me-2"
+          className="w-full sm:w-3/4 px-4 py-2 mb-4 sm:mb-0 focus:outline-none text-gray-700 bg-secondary"
           type="search"
-          placeholder="Search"
-          aria-label="Search"
+          placeholder="Search for products..."
           onChange={(e) => setValues(e.target.value)}
           value={values}
         />
-        <button className="btn btn-outline-warning" type="submit">
+        <button
+          className="w-full sm:w-1/4 px-4 py-2 bg-primary text-dark hover:bg-secondary"
+          type="submit"
+        >
           Search
         </button>
       </form>

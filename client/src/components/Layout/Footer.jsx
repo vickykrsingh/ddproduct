@@ -3,12 +3,25 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <div className="text-center bg-purple-700 text-white py-3 footer">
-      <h3 className="fw-bold">All Rights Reserved &copy; admin@gmail.com</h3>
-      <div>
-        <Link to="/about">About</Link> |<Link to="/privacy">Privacy</Link> |
-        <Link to="/contact">Contact</Link>
+    <footer className="bg-dark text-primary py-5">
+      <div className="text-center">
+        <h3 className="font-semibold mb-2 text-lg">
+          All Rights Reserved &copy; admin@gmail.com
+        </h3>
+        <div className="space-x-4">
+          <Link to="/about" className="hover:text-accent transition duration-200">
+            About
+          </Link>
+          <span>|</span>
+          <Link to="/privacy" className="hover:text-accent transition duration-200">
+            Privacy
+          </Link>
+          <span>|</span>
+          <Link to="/contact" className="hover:text-accent transition duration-200">
+            Contact
+          </Link>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 }

@@ -3,40 +3,40 @@ import { NavLink } from "react-router-dom";
 
 function AdminMenu() {
   return (
-    <>
-      <div className="list-group mr-5">
+    <div className="w-full sm:w-64 p-4">
+      <div className="flex flex-col space-y-2">
         <NavLink
           to="/dashboard/admin/create-category"
-          className="list-group-item list-group-item-light bg-purple-800 list-group-item-action"
+          className="py-3 px-4 bg-primary text-dark rounded-lg shadow-md hover:bg-primary-dark transition duration-200 text-center"
         >
           Create Category
         </NavLink>
         <NavLink
           to="/dashboard/admin/create-product"
-          className="list-group-item list-group-item-light bg-purple-800 list-group-item-action"
+          className="py-3 px-4 bg-primary text-dark rounded-lg shadow-md hover:bg-primary-dark transition duration-200 text-center"
         >
           Create Product
         </NavLink>
         <NavLink
           to="/dashboard/admin/products"
-          className="list-group-item list-group-item-light bg-purple-800 list-group-item-action"
+          className="py-3 px-4 bg-primary text-dark rounded-lg shadow-md hover:bg-primary-dark transition duration-200 text-center"
         >
           All Products
         </NavLink>
         <NavLink
           to="/dashboard/admin/all-orders"
-          className="list-group-item list-group-item-light bg-purple-800 list-group-item-action"
+          className="py-3 px-4 bg-primary text-dark rounded-lg shadow-md hover:bg-primary-dark transition duration-200 text-center"
         >
           All Orders
         </NavLink>
         <NavLink
           to="/dashboard/admin-dashboard"
-          className="list-group-item list-group-item-light bg-purple-800 list-group-item-action"
+          className="py-3 px-4 bg-primary text-dark rounded-lg shadow-md hover:bg-primary-dark transition duration-200 text-center"
         >
           Dashboard
         </NavLink>
       </div>
-    </>
+    </div>
   );
 }
 

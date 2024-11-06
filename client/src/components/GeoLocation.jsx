@@ -4,8 +4,7 @@ import { useAddress } from '../context/SetCurrentAddress.jsx';
 
 const GeolocationComponent = () => {
   const [location, setLocation] = useState(null);
-  // const [addressComponents, setAddressComponents] = useState({});s
-  const {currentAddress,setCurrentAddress} = useAddress({})
+  const { currentAddress, setCurrentAddress } = useAddress({});
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -20,7 +19,6 @@ const GeolocationComponent = () => {
 
           try {
             const response = await axios.get(apiUrl);
-            console.log(response)
             const firstResult = response.data.results[0];
 
             if (firstResult) {
@@ -33,7 +31,6 @@ const GeolocationComponent = () => {
                   postcode,
                   city,
                   road,
-                  // Add more components as needed
                 },
               } = firstResult;
 
@@ -45,7 +42,6 @@ const GeolocationComponent = () => {
                 state,
                 village,
                 state_district
-                // Add more components as needed
               });
             } else {
               setCurrentAddress({ error: 'No address found' });
@@ -65,18 +61,41 @@ const GeolocationComponent = () => {
   }, []);
 
   return (
-    <div>
+    <div className="p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">Your Location & Contact Info</h2>
       {location ? (
-        <div>
-          <p>Your current location: {location.latitude}, {location.longitude}</p>
-          <p>Country: {currentAddress.country}</p>
-          <p>Postal Code: {currentAddress.postcode}</p>
-          <p>City: {currentAddress.city}</p>
-          <p>Street: {currentAddress.road}</p>
-          <p>state:{currentAddress.state}</p>
-          <p>village:{currentAddress.village}</p>
-          <p>state_district:{currentAddress.state_district}</p>
-          {/* Add more components as needed */}
+        <div className="space-y-4">
+          {/* Map Embedding */}
+          <div className="w-full h-64 rounded-lg overflow-hidden mb-4">
+            <iframe
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              style={{ border: 0 }}
+              src={`https://www.google.com/maps/embed/v1/view?key=YOUR_GOOGLE_MAPS_API_KEY&center=${location.latitude},${location.longitude}&zoom=15`}
+              allowFullScreen
+              title="Google Map of Current Location"
+            ></iframe>
+          </div>
+
+          {/* Contact Information */}
+          <div className="text-lg">
+            <p><span className="font-semibold">Name:</span> Your Name</p>
+            <p><span className="font-semibold">Email:</span> your.email@example.com</p>
+            <p><span className="font-semibold">Phone:</span> +1 234 567 890</p>
+          </div>
+
+          {/* Address Information */}
+          <div className="mt-4 text-lg">
+            <p><span className="font-semibold">Location:</span> {location.latitude}, {location.longitude}</p>
+            <p><span className="font-semibold">Country:</span> {currentAddress.country}</p>
+            <p><span className="font-semibold">Postal Code:</span> {currentAddress.postcode}</p>
+            <p><span className="font-semibold">City:</span> {currentAddress.city}</p>
+            <p><span className="font-semibold">Street:</span> {currentAddress.road}</p>
+            <p><span className="font-semibold">State:</span> {currentAddress.state}</p>
+            <p><span className="font-semibold">Village:</span> {currentAddress.village}</p>
+            <p><span className="font-semibold">District:</span> {currentAddress.state_district}</p>
+          </div>
         </div>
       ) : (
         <p>Loading location...</p>

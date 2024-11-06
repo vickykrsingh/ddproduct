@@ -20,7 +20,7 @@ export default function Layout({
         <title>{title}</title>
       </Helmet>
       <Header />
-      <main className="bg-purple-900 main">{children}</main>
+      <main className="bg-gray-300 main">{children}</main>
       <Footer />
     </>
   );

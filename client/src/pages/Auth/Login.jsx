@@ -20,7 +20,7 @@ export default function Login() {
         password,
       });
       if (res && res.data.success) {
-        toast.success(res.data && res.data.message);
+        toast.success(res.data.message);
         setAuth({
           ...auth,
           user: res.data.user,
@@ -32,81 +32,70 @@ export default function Login() {
         toast.error(res.data.message);
       }
     } catch (error) {
-      toast.error("something went wrong!");
+      toast.error("Something went wrong!");
     }
   };
 
   return (
-    <>
-      <Layout title={"ECommerce - Login"}>
-        <div className="bg-purple-900 w-screen h-screen flex flex-col items-center justify-center px-3">
-          <form
-            className="w-full max-w-2xl h-1/2 bg-purple-700 px-5 py-5 rounded-md flex flex-col gap-5"
-            onSubmit={(e) => login(e)}
+    <Layout title="ECommerce - Login">
+      <div className="bg-dark min-h-screen flex flex-col items-center justify-center px-4">
+        <form
+          onSubmit={login}
+          className="w-full max-w-lg bg-secondary p-8 rounded-lg shadow-lg space-y-6"
+        >
+          {/* Title */}
+          <h2 className="text-2xl font-bold text-dark text-center">Login</h2>
+          
+          {/* Email Input */}
+          <div>
+            <label className="block text-dark font-medium mb-2">Email Address</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@gmail.com"
+              className="w-full p-2 border border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+          </div>
+
+          {/* Password Input */}
+          <div>
+            <label className="block text-dark font-medium mb-2">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
+              className="w-full p-2 border border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <div className="text-right mt-2">
+              <Link to="/forgetpassword" className="text-sm text-dark hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-primary text-dark py-2 rounded-lg hover:bg-dark hover:text-secondary transition duration-200"
           >
-            <div className="w-full flex justify-center items-center">
-              <h2 className="text-3xl font-semibold text-white">LOGIN</h2>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label
-                htmlFor
-                className="text-white font-semibold tracking-wider"
-              >
-                Enter Your Email
-              </label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="abc@gmail.com"
-                className="rounded-lg px-4 py-1 w-full h-10 focus:outline-none focus:shadow-2xl"
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label
-                htmlFor
-                className="text-white font-semibold tracking-wider"
-              >
-                Enter Your Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="********"
-                className="rounded-lg px-4 py-1 w-full h-10 tracking-widest focus:outline-none focus:shadow-2xl"
-              />
-              <div className="w-full flex justify-end">
-                <Link
-                  to="/forgetpassword"
-                  className="text-white font-light tracking-wider underline"
-                >
-                  Forget Password
-                </Link>
-              </div>
-            </div>
-            <div className="flex justify-between">
-              <button
-                type="submit"
-                className="bg-white text-purple-900 font-semibold tracking-wider rounded-full w-full h-10 border-2 border-purple-600 hover:bg-purple-600 hover:text-white transition duration-150 focus:outline-none"
-              >
-                LOGIN
-              </button>
-            </div>
-            <div className="flex justify-center ">
-              <h3 className="text-white tracking-wider">
-                Not a member?{" "}
-                <Link
-                  to="/register"
-                  className="font-semibold uppercase underline text-purple-200 hover:text-purple-300 cursor-pointer"
-                >
-                  Signup
-                </Link>
-              </h3>
-            </div>
-          </form>
-        </div>
-      </Layout>
-    </>
+            Login
+          </button>
+
+          {/* Signup Link */}
+          <div className="text-center mt-4">
+            <p className="text-dark">
+              Not a member?{" "}
+              <Link to="/register" className="font-semibold text-dark hover:underline">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </form>
+      </div>
+    </Layout>
   );
 }
