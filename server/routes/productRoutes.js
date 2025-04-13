@@ -47,11 +47,11 @@ router.put(
   updateProductController
 );
 // Filter Product
-router.post("/product-filter", productFilter);
+router.post("/product-filter/:page", productFilter);
 // count Product
 router.get("/product-count", totalProduct);
 // per page list product
-router.get("/product-list/:page", perPageProduct);
+// router.get("/product-list/:page", perPageProduct);
 // Search product
 router.get("/search/:keyword", searchProductController);
 // Similar product

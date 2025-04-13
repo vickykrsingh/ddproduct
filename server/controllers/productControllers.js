@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import fs from "fs";
 import productModel from "../models/productModel.js";
+import mongoose from "mongoose";
 
 export const createProductController = async (req, res) => {
   try {
@@ -191,19 +192,46 @@ export const updateProductController = async (req, res) => {
 
 export const productFilter = async (req, res) => {
   try {
-    const { checked, radio } = req.body;
-    let args = {};
-    if (checked.length > 0) args.category = checked;
-    if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
-    const products = await productModel.find(args);
+    const { checked = [], radio = [] } = req.body;
+    const { page = 1 } = req.params;
+    const perPage = 8;
+
+    let query = {};
+
+    // If category filter is applied
+    if (checked.length > 0) {
+      query.category = { $in: checked };
+    }
+
+    // If price range filter is applied
+    if (radio.length === 2) {
+      query.price = {
+        $gte: Number(radio[0]),
+        $lte: Number(radio[1]),
+      };
+    }
+
+    const products = await productModel
+      .find(query)
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    const total = await productModel.countDocuments(query);
+    const pageCount = Math.ceil(total / perPage);
+    console.log(pageCount)
+
+    // const products = await productModel.find(query);
+
     res.status(200).send({
       success: true,
       products,
+      pageCount
     });
   } catch (error) {
+    console.error("Error in productFilter:", error);
     res.status(400).send({
       success: false,
-      message: "Something went wrong while filtering product",
+      message: "Something went wrong while filtering products",
     });
   }
 };
@@ -232,6 +260,7 @@ export const perPageProduct = async (req, res) => {
   try {
     const perPageProductLimit = 8;
     const currentPage = req.params.page ? req.params.page : 1;
+    console.log(currentPage)
 
     const products = await productModel
       .find({})
@@ -239,9 +268,12 @@ export const perPageProduct = async (req, res) => {
       .skip((currentPage - 1) * perPageProductLimit)
       .limit(perPageProductLimit)
       .sort({ createdAt: -1 });
+    const productCount = await productModel.estimatedDocumentCount();
+    console.log(productCount)
     res.status(200).send({
       success: true,
       products,
+      productCount,
     });
   } catch (error) {
     res.status(400).send({

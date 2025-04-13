@@ -1,5 +1,5 @@
-1. Add Pagination
-2. Fix visiblity of product description in home page
+1. Add Pagination -> done
+2. Fix visiblity of product description in home page 
 3. Don't strech filter product container to the bottom
 4. Add Order status Progress bar in user dashbaord order section
 5. User or Admin can cancel the order

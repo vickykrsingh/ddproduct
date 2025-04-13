@@ -29,7 +29,7 @@ function App() {
     <>
       <Toaster />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/:page?" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/search" element={<Search />} />
         <Route path="/cart" element={<Cart />} />
