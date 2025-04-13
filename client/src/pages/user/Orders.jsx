@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import Loading from "../../components/Loading.jsx";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import OrderTrackingStepProgressBar from "../../components/OrderTrackingStepProgress.jsx";
 
 function Orders() {
   const [order, setOrder] = useState([]);
@@ -53,7 +54,7 @@ function Orders() {
               order.length>0 ? <div className="space-y-6">
               {order.map((o, i) => (
                 <div key={o._id} className="border-b border-secondary pb-4 mb-4">
-                  <div className="text-secondary font-medium">
+                  <div className={`${o.shippedAddress=='Shipped'?'text-secondary':'text-green-600'} font-medium`}>
                     Order #{i + 1}
                   </div>
                   <p className="mt-1">
@@ -66,11 +67,15 @@ function Orders() {
                     <b>Total Price:</b> ₹{o.totalPrice}
                   </p>
                   <p>
-                    <b>Shipping Status:</b> {o.status}
-                  </p>
-                  <p>
                     <b>Time:</b> {moment(o.createdAt).fromNow()}
                   </p>
+                  <p className="">
+                    <b>Shipping Status:</b> {o.status}
+                  </p>
+                  <OrderTrackingStepProgressBar status={o.status} />
+                  {o.status=='Shipped' && <p className="text-green-400">
+                    <b>{o.shippedAddress}</b>
+                  </p>}
                   {o.address && (
                     <details className="mt-2">
                       <summary className="text-primary cursor-pointer">Address</summary>

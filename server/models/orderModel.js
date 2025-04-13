@@ -39,6 +39,10 @@ const orderSchema = new mongoose.Schema(
       village: String,
       state_district: String,
     },
+    shippedAddress:{
+      type:String,
+      default:"Not processed"
+    }
   },
   { timestamps: true }
 );

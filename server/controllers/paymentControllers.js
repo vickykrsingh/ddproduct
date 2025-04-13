@@ -108,11 +108,11 @@ export const adminAllOrder = async (req, res) => {
 export const orderStatusUpdate = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { status } = req.body;
+    const { status,shippedAddress } = req.body;
 
     const order = await OrderModel.findByIdAndUpdate(
       orderId,
-      { status: status },
+      { status: status,shippedAddress:status=='Cancel'?'':shippedAddress },
       { new: true }
     );
     res.status(200).send({
@@ -155,5 +155,25 @@ export const deleteOder = async (req,res) => {
   } catch (error) {
     // TODO
     console.log(error)
+  }
+}
+
+export const updateShippedAddress = async (req,res) => {
+  const {order_id,shippedAddress} = req.body;
+
+  try {
+    const resp = await OrderModel.findByIdAndUpdate(order_id,{shippedAddress:shippedAddress})
+    console.log(resp)
+    return res.status(200).send({
+      success:true,
+      message:"Shipped status update successfuly",
+      data:resp
+    })
+  } catch (error) {
+    res.status(205).json({
+      success: false,
+      message: "Error while updating Shipped Address",
+      error,
+    });
   }
 }
