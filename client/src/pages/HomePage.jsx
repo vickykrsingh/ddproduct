@@ -36,8 +36,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getAllProduct();
     fetchAllCategory();
+    getAllProduct();
   }, [curPage]);
 
   const getAllProduct = async () => {
