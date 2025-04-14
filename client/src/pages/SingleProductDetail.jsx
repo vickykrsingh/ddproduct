@@ -131,8 +131,8 @@ function SingleProductDetail() {
             </div>
           </div>
 
-          <div className="mt-10">
-            <h4 className="text-center text-accent font-bold text-xl mb-5">
+          <div className="mt-10 pb-10">
+            <h4 className="text-center text-dark font-bold text-xl mb-5">
               Similar Products
             </h4>
             {similarProducts.length <= 0 ? (
@@ -149,22 +149,22 @@ function SingleProductDetail() {
                       key={s._id}
                     >
                       <img
-                        className="w-full h-72 object-cover rounded-md"
+                        className="w-80 mx-auto mb-3 h-72 object-cover rounded-md"
                         src={`${
                           import.meta.env.VITE_APP_API_KEY
                         }/api/v1/product/product-photo/${s._id}`}
                         alt="Similar Product"
                       />
-                      <div className="w-full bg-primary">
+                      <div className="w-full bg-secondary px-2">
                         <h5 className="font-semibold text-lg">{s.name}</h5>
                         <p className="text-sm">
                           {s.description.substring(0, 25)}...
                         </p>
                       </div>
-                      <div className="text-sm font-semibold text-dark bg-primary p-2 w-full">
+                      <div className="text-sm font-semibold text-dark bg-secondary p-2 w-full">
                         &#8377;{s.price} | Stock {s.quantity} items
                       </div>
-                      <div className="flex justify-evenly w-full bg-primary">
+                      <div className="flex justify-between w-full bg-secondary px-2">
                         <AddToCart product={s} width={2} height={1} />
                         <SeeMore pId={s._id} cId={s.category} />
                       </div>

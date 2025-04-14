@@ -211,20 +211,21 @@ export const productFilter = async (req, res) => {
       };
     }
 
-    const products = await productModel
+    const products = productModel
       .find(query)
       .skip((page - 1) * perPage)
       .limit(perPage);
 
-    const total = await productModel.countDocuments(query);
-    const pageCount = Math.ceil(total / perPage);
+    const total = productModel.countDocuments(query);
+    const data = await Promise.all([products,total])
+    const pageCount = Math.ceil(data[1] / perPage);
     console.log(pageCount)
 
     // const products = await productModel.find(query);
 
     res.status(200).send({
       success: true,
-      products,
+      products:data[0],
       pageCount
     });
   } catch (error) {
@@ -232,54 +233,6 @@ export const productFilter = async (req, res) => {
     res.status(400).send({
       success: false,
       message: "Something went wrong while filtering products",
-    });
-  }
-};
-
-// Fetch the number of total products
-
-export const totalProduct = async (req, res) => {
-  try {
-    const total = await productModel.find({}).estimatedDocumentCount();
-    res.status(200).send({
-      success: true,
-      total,
-    });
-  } catch (error) {
-    res.status(400).send({
-      success: false,
-      message: "Error While fetching total number of product",
-      error,
-    });
-  }
-};
-
-// per page products
-
-export const perPageProduct = async (req, res) => {
-  try {
-    const perPageProductLimit = 8;
-    const currentPage = req.params.page ? req.params.page : 1;
-    console.log(currentPage)
-
-    const products = await productModel
-      .find({})
-      .select("-photo")
-      .skip((currentPage - 1) * perPageProductLimit)
-      .limit(perPageProductLimit)
-      .sort({ createdAt: -1 });
-    const productCount = await productModel.estimatedDocumentCount();
-    console.log(productCount)
-    res.status(200).send({
-      success: true,
-      products,
-      productCount,
-    });
-  } catch (error) {
-    res.status(400).send({
-      success: false,
-      message: "Error While fetching per page product",
-      error,
     });
   }
 };

@@ -33,15 +33,15 @@ function SearchPage() {
                   src={`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-photo/${p._id}`}
                   alt="Product Image"
                 />
-                <div className="p-4 text-dark">
+                <div className="px-4 pt-4 text-dark">
                   <h5 className="text-xl font-semibold">{p.name}</h5>
                   <p className="text-sm text-dark">{p.description.substring(0, 25)}...</p>
                 </div>
-                <ul className="list-group list-group-flush">
+                <ul className="list-group list-group-flush px-2">
                   <li className="bg-secondary-900 text-dark p-2 font-semibold">
                     &#8377;{p.price} | Stock: {p.quantity} items
                   </li>
-                  <div className="flex justify-between items-center p-4">
+                  <div className="flex justify-between items-center pb-4">
                     <SeeMore pId={p._id} cId={p.category} />
                     <AddToCart product={p} width={2} height={1} />
                   </div>

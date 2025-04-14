@@ -41,12 +41,12 @@ function Orders() {
       <div className="container mx-auto py-8 text-dark">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
-          <div className="lg:w-1/4">
+          <div className="lg:w-1/4 mx-2">
             <UserMenu />
           </div>
 
           {/* Orders Content */}
-          <div className="lg:w-3/4 bg-dark p-6 rounded-lg shadow-lg text-white">
+          <div className="lg:w-3/4 bg-dark p-6 rounded-lg shadow-lg text-white mx-2">
             <h2 className="text-2xl font-semibold text-primary mb-4">Your Orders</h2>
             {loading ? (
               <Loading />

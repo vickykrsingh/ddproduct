@@ -5,12 +5,10 @@ import {
   deleteProductController,
   getAllProductController,
   getSingleProductController,
-  perPageProduct,
   photoController,
   productFilter,
   searchProductController,
   similarProduct,
-  totalProduct,
   updateProductController,
 } from "../controllers/productControllers.js";
 import { isAdmin, requireSignIn } from "./../middlewares/authMiddleware.js";
@@ -48,10 +46,6 @@ router.put(
 );
 // Filter Product
 router.post("/product-filter/:page", productFilter);
-// count Product
-router.get("/product-count", totalProduct);
-// per page list product
-// router.get("/product-list/:page", perPageProduct);
 // Search product
 router.get("/search/:keyword", searchProductController);
 // Similar product

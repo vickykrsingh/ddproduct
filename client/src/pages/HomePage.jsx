@@ -4,7 +4,6 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { prices } from "../components/Prices.jsx";
 import { Radio } from "antd";
-// import { TfiReload } from "react-icons/tfi";
 import Loading from "../components/Loading.jsx";
 import AddToCart from "../components/Buttons/AddToCart.jsx";
 import SeeMore from "../components/Buttons/SeeMore.jsx";
@@ -76,17 +75,6 @@ export default function Home() {
       toast.error("Request Timeout");
     }
   };
-  // const filterProducts = async () => {
-  //   try {
-  //     const { data } = await axios.post(`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/product-filter`, {
-  //       checked:categoryChange,
-  //       radio:priceChange
-  //     });
-  //     setProducts((prev)=>prev=data.products);
-  //   } catch (error) {
-  //     toast.error("Request Timeout");
-  //   }
-  // };
 
   return (
     <Layout title={"ECommerce - Home"}>
@@ -232,7 +220,7 @@ export default function Home() {
                   <button
                     key={index}
                     onClick={() => handlePageChange(index + 1)}
-                    className="px-4 py-2 bg-gray-400 rounded-md font-semibold text-gray-800 shadow-md"
+                    className={`px-4 py-2 ${curPage==index+1 ? 'bg-dark text-secondary' : 'bg-gray-400'} rounded-md font-semibold text-gray-800 shadow-md `}
                   >
                     {index + 1}
                   </button>

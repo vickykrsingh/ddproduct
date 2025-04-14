@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 function UserMenu() {
   return (
-    <div className="flex flex-col bg-dark rounded-lg p-4 space-y-2 w-full max-w-xs">
+    <div className="flex flex-col bg-dark rounded-lg p-4 space-y-2 w-full max-w-full ">
       <NavLink
         to="/dashboard/user/profile"
         className={({ isActive }) =>
