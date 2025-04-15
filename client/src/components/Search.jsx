@@ -5,43 +5,51 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Search() {
-  const [values, setValues] = useState("");
+  // const [values, setValues] = useState("");
   const [searchProduct, setSearchProduct] = useSearch([]);
   const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
-    try {
-      e.preventDefault();
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/search/${values}`);
-      if (data?.success) {
-        setSearchProduct(data?.products);
-        navigate("/search");
+  const handleSearch = async (value) => {
+    if(value.length>0){
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_APP_API_KEY}/api/v1/product/search/${value}`);
+        if (data?.success) {
+          setSearchProduct(data?.products);
+          navigate("/search");
+        }
+      } catch (error) {
+        toast.error("Request Timeout");
       }
-    } catch (error) {
-      toast.error("Request Timeout");
+    }else{
+      setSearchProduct([])
     }
   };
 
+  function debounce(func, delay) {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func(...args); // pass arguments here
+      }, delay);
+    };
+  }
+  
+
+  const debouncedSearch = debounce(handleSearch, 500);
+
   return (
-    <div className="w-full max-w-md mx-auto">
-      <form
-        className="flex flex-col sm:flex-row sm:items-center bg-secondary shadow-md"
-        onSubmit={handleSearch}
+    <div className="w-full mx-auto rounded-md">
+      <div
+        className="flex flex-col sm:flex-row sm:items-center bg-gray-300 rounded-md"
       >
         <input
-          className="w-full sm:w-3/4 px-4 py-2 mb-4 sm:mb-0 focus:outline-none text-gray-700 bg-secondary"
+          className="w-full px-4 py-2 mb-4 sm:mb-0 focus:outline-none text-gray-700 bg-gray-300 rounded-md"
           type="search"
           placeholder="Search for products..."
-          onChange={(e) => setValues(e.target.value)}
-          value={values}
+          onChange={(e) => debouncedSearch(e.target.value)}
         />
-        <button
-          className="w-full sm:w-1/4 px-4 py-2 bg-primary text-dark hover:bg-secondary"
-          type="submit"
-        >
-          Search
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

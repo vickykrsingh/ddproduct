@@ -25,7 +25,7 @@ function SearchPage() {
                     ? `/dashboard/admin/product/${p._id}`
                     : `/product-detail/${p._id}/${p.category}`
                 }
-                className="card bg-secondary-800 text-dark rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105"
+                className="bg-secondary-800 text-dark rounded-lg overflow-hidden shadow-lg"
                 key={p._id}
               >
                 <img
